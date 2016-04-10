@@ -1,15 +1,12 @@
 <resources>
-    <string name="app_name">FoodNotes</string>
+    <string name="app_name">美食紀錄</string>
     <string name="name">店名</string>
     <string name="confirm">確認</string>
     <string name="google_maps_key">AIzaSyCxr2obiSF2CUfuBqHo1Mtd25dKugPmDF8</string>
 
     <string-array name="distance">
-        <item>範圍</item>
-        <item>3公里</item>
         <item>5公里</item>
         <item>7公里</item>
-        <item>9公里</item>
         <item>11公里</item>
         <item>13公里</item>
         <item>15公里</item>

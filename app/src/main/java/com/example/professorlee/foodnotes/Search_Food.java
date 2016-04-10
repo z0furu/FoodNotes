@@ -72,7 +72,7 @@ public class Search_Food extends AppCompatActivity {
     private List<TableItem_search_food> ListtableItem = new ArrayList<>();
 
     int arrayLength;
-    int radius =  1000;
+    int radius =  5000;
     private static final int Request_Location = 2;
     private static String[] PERMISSIONS_LOCATION = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
 
@@ -150,37 +150,31 @@ public class Search_Food extends AppCompatActivity {
         Spdistance.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.i(TAG, "onItemSelected: " + position);
                 switch (position) {
-                    case 1 :
-                        radius = 3000;
-                        refresh();
-                        break;
-                    case 2 :
+                    case 0 :
                         radius = 5000;
                         refresh();
                         break;
-                    case 3 :
+                    case 1 :
                         radius = 7000;
                         refresh();
                         break;
-                    case 4 :
-                        radius = 9000;
-                        refresh();
-                        break;
-                    case 5 :
+                    case 2 :
                         radius = 11000;
                         refresh();
                         break;
-                    case 6 :
+                    case 3 :
                         radius = 13000;
                         refresh();
                         break;
-                    case 7 :
+                    case 4 :
                         radius = 15000;
                         refresh();
                         break;
-                }
 
+                }
+                Log.i(TAG, "onItemSelected: " + radius);
             }
 
             @Override
@@ -205,7 +199,7 @@ public class Search_Food extends AppCompatActivity {
 
         final Request request = new Request.Builder()
                 .url("https://maps.googleapis.com/maps/api/place/nearbysearch/json?language=zh-TW&location="
-                        + lat + "," + lng + "&radius=" + radius + "&types=restaurant&key=AIzaSyAv6Z_x-ssH1UhWoWbaZzAGCQN0i1T5t-w")
+                        + lat + "," + lng + "&radius=" + radius/2 + "&types=restaurant|food&key=AIzaSyAv6Z_x-ssH1UhWoWbaZzAGCQN0i1T5t-w")
                 .build();
 
         Call call = okHttpClient.newCall(request);

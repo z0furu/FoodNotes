@@ -40,11 +40,11 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     RelativeLayout viewpagerRelativeLayout;
 
     private int[] images = {
-            R.drawable.cat, R.drawable.flower, R.drawable.hippo,
+            R.drawable.ic_add, R.drawable.ic_restaurant_menu, R.drawable.ic_place_black_24dp,
             R.drawable.monkey, R.drawable.mushroom, R.drawable.panda};
 
     private String[] txtImages = {
-            "新增美食", "查看記錄", "test", "test", "Test", "test"};
+            "新增美食", "查看記錄", "搜尋附近", "test", "Test", "test"};
 
     private int dotCount;
     private ImageView[] dots;
@@ -85,9 +85,11 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     private List<Fragment> getFragment() {
         List<Fragment> fragments = new ArrayList<>();
 
-        fragments.add(PagerFragment.newInstance(R.drawable.cat));
-        fragments.add(PagerFragment.newInstance(R.drawable.flower));
-        fragments.add(PagerFragment.newInstance(R.drawable.panda));
+        fragments.add(PagerFragment.newInstance(R.drawable.food1));
+        fragments.add(PagerFragment.newInstance(R.drawable.food2));
+        fragments.add(PagerFragment.newInstance(R.drawable.food3));
+        fragments.add(PagerFragment.newInstance(R.drawable.food4));
+        fragments.add(PagerFragment.newInstance(R.drawable.food5));
 
         return fragments;
 
