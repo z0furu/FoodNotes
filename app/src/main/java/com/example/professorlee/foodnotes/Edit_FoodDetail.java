@@ -2,6 +2,7 @@ package com.example.professorlee.foodnotes;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -31,9 +32,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.professorlee.foodnotes.config.ipconfig;
+import com.orhanobut.logger.Logger;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,6 +52,14 @@ import java.util.Locale;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class Edit_FoodDetail extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
@@ -74,6 +89,8 @@ public class Edit_FoodDetail extends AppCompatActivity implements DatePickerDial
     private static final int TYPE_CAMERA = 2;
     private static final int MEDIA_TYPE_IMAGE = 3;
 
+    private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
+
     private static String imgname = null;
     private DisplayMetrics mPhone;
     private String account;
@@ -81,6 +98,10 @@ public class Edit_FoodDetail extends AppCompatActivity implements DatePickerDial
 
     String[] foodType = {"早餐", "午餐", "晚餐", "消夜"};
     int year, month, date;
+    String strImage;
+    String strShopName;
+
+    private ProgressDialog pDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +111,7 @@ public class Edit_FoodDetail extends AppCompatActivity implements DatePickerDial
 
         SharedPreferences setting = getSharedPreferences("login", 0);
         account = setting.getString("account", "");
+        Logger.init();
 
         mPhone = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(mPhone);
@@ -108,16 +130,88 @@ public class Edit_FoodDetail extends AppCompatActivity implements DatePickerDial
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
-        if (id == R.id.btnEdit) {
-
+        if (id == R.id.btnGone) {
+            updateFoodDetail();
+            showDialog();
+            Log.i(TAG, "onOptionsItemSelected: 上傳");
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void updateFoodDetail() {
+
+        OkHttpClient okhttpClient = new OkHttpClient();
+        RequestBody requestBody;
+        Logger.d(edtShopname.getText().toString()+"," +edtLocation.getText().toString() +"," +edtDate.getText().toString()
+                +"," +edtType.getText().toString()+"," +strImage);
+        if ("".equals(edtShopname.getText().toString()) || "".equals(edtDate.getText().toString()) ||
+                "".equals(edtLocation.getText().toString()) || "".equals(edtType.getText().toString()) ||
+                "".equals(strImage)) {
+            Toast.makeText(getApplicationContext(), "請輸入完整訊息", Toast.LENGTH_SHORT).show();
+
+        }else {
+
+            String file = strImage;
+
+            if (isCamera) {
+                file = fileUri.getPath();
+            }
+            Logger.d(edtShopname.getText().toString()+"," +edtLocation.getText().toString() +"," +edtDate.getText().toString()
+                    +"," +edtType.getText().toString()+"," +file);
+            requestBody = new MultipartBody.Builder()
+                    .setType(MultipartBody.FORM)
+                    .addFormDataPart("account", account)
+                    .addFormDataPart("edtshopname", strShopName)
+                    .addFormDataPart("shopname", edtShopname.getText().toString())
+                    .addFormDataPart("time", edtDate.getText().toString())
+                    .addFormDataPart("location", edtLocation.getText().toString())
+                    .addFormDataPart("foodtype", edtType.getText().toString())
+                    .addFormDataPart("addimage", file, RequestBody.create(MEDIA_TYPE_PNG, new File(file)))
+                    .build();
+
+            Request request = new Request.Builder()
+                    .url(ipconfig.updateFoodDetail)
+                    .post(requestBody)
+                    .build();
+
+            Call call = okhttpClient.newCall(request);
+            call.enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    Logger.i(e.getMessage());
+                    Edit_FoodDetail.this.runOnUiThread(()-> hideDialog());
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    Logger.json(response.body().string());
+                    String strResponse = response.body().string();
+                    int success;
+
+                    try {
+                        JSONObject json = new JSONObject(strResponse);
+                        success = json.getInt("success");
+                        if (success == 1) {
+                            startActivity(new Intent(Edit_FoodDetail.this, FoodDetail.class));
+                            Edit_FoodDetail.this.runOnUiThread(()-> hideDialog());
+                            Toast.makeText(getApplicationContext(), "修改成功", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }else {
+                            Toast.makeText(getApplicationContext(), "商店名稱已重複", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            });
+        }
     }
 
 
     private void initLayout() {
         Bundle bundle = this.getIntent().getExtras();
-        String strShopName = bundle.getString("shopName");
+        strShopName = bundle.getString("shopName");
         edtShopname.setText(strShopName);
 
         String strDate = bundle.getString("Date");
@@ -133,7 +227,7 @@ public class Edit_FoodDetail extends AppCompatActivity implements DatePickerDial
         edtType.setText(strFoodType);
 
 
-        String strImage = bundle.getString("image");
+        strImage = bundle.getString("image");
         Glide.with(Edit_FoodDetail.this).load("http://163.17.9.116/Lu/food_note/upload/" + strImage).fitCenter().into(foodimage);
 
         String strLocation = bundle.getString("Location");
@@ -342,5 +436,29 @@ public class Edit_FoodDetail extends AppCompatActivity implements DatePickerDial
         } else {
             foodimage.setImageBitmap(b);
         }
+    }
+
+    private void showDialog() {
+        pDialog = new ProgressDialog(this);
+        if (!pDialog.isShowing()) {
+            pDialog.setMessage("修改中");
+            pDialog.setCancelable(false);
+            pDialog.show();
+        }
+    }
+
+    private void hideDialog() {
+        if (pDialog.isShowing()) {
+            pDialog.dismiss();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (pDialog != null){
+            pDialog.dismiss();
+        }
+
     }
 }

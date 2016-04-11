@@ -42,6 +42,7 @@
                 android:layout_marginLeft="16dp"
                 android:textSize="@dimen/food_detail_text"
                 tools:text="123"
+                android:background="@null"
                 android:textColor="@android:color/black"/>
 
             <View
@@ -89,7 +90,6 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:padding="5dp"
-                android:onClick="btnToMap"
                 android:textSize="@dimen/food_detail_text"
                 tools:text="123"
                 android:layout_marginLeft="16dp"
