@@ -7,6 +7,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -49,6 +51,8 @@ public class FoodDetail extends AppCompatActivity {
 
     String location;
 
+    String image;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +63,32 @@ public class FoodDetail extends AppCompatActivity {
 
         Log.i(TAG, "onCreate: " + getShopName());
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.food_detail, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+        if (id == R.id.btnEdit) {
+            Bundle bundle = new Bundle();
+            bundle.putString("shopName", txtshopname.getText().toString());
+            bundle.putString("Date", txtdate.getText().toString());
+            bundle.putString("FoodType", txttype.getText().toString());
+            bundle.putString("Location", btnlocation.getText().toString());
+            bundle.putString("image", image);
+            Intent intent = new Intent();
+            intent.setClass(FoodDetail.this, Edit_FoodDetail.class);
+            intent.putExtras(bundle);
+            startActivity(intent);
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void getFoodDetail() {
@@ -90,7 +120,7 @@ public class FoodDetail extends AppCompatActivity {
                         location = getJson(json, "location");
                         final String time = getJson(json, "time");
                         final String foodtype = getJson(json, "foodtype");
-                        final String image = getJson(json, "image");
+                        image = getJson(json, "image");
 
                         runOnUiThread(new Runnable() {
                             @Override
@@ -99,7 +129,7 @@ public class FoodDetail extends AppCompatActivity {
                                 btnlocation.setText(location);
                                 txtdate.setText(time);
                                 txttype.setText(foodtype);
-                                Glide.with(FoodDetail.this).load("http://163.17.9.116:8080/food_note/upload/" + image).fitCenter().into(foodimage);
+                                Glide.with(FoodDetail.this).load("http://163.17.9.116/Lu/food_note/upload/" + image).fitCenter().into(foodimage);
                             }
                         });
 

@@ -25,7 +25,6 @@
         <activity android:name=".Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -35,8 +34,14 @@
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".MapActivity" />
         <activity android:name=".FoodList" />
-        <activity android:name=".FoodDetail" />
-        <activity android:name=".Search_Food"></activity>
+        <activity
+            android:name=".FoodDetail"
+            android:theme="@style/CustomAppTheme" />
+
+        <activity android:name=".Search_Food" />
+        <activity
+            android:name=".Edit_FoodDetail"
+            android:theme="@style/CustomAppTheme" />
     </application>
 
 </manifest>

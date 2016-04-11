@@ -182,13 +182,10 @@ public class AddFood extends AppCompatActivity implements DatePickerDialog.OnDat
             if ("".equals(shopname) || "".equals(edtLocation.getText().toString()) || time == null || foodtype == null || imgname == null) {
                 Toast.makeText(getApplicationContext(), "請輸入完整資訊", Toast.LENGTH_SHORT).show();
             } else {
-                AddFood.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        showDialog();
 
-                    }
-                });
+                AddFood.this.runOnUiThread(() -> showDialog());
+
+
                 Log.i(TAG, "onOptionsItemSelected: " + "相機" + isCamera + "相簿" + isPhote);
                 if (isCamera) {
                     String file = fileUri.getPath();

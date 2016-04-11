@@ -69,12 +69,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 .build();
 
         loginGoolge.setScopes(gso.getScopeArray());
-        loginGoolge.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signIn();
-            }
-        });
+        loginGoolge.setOnClickListener(view -> signIn());
 
         storeAccount = getSharedPreferences("login", 0);
         strAccount = storeAccount.getString("account", "");
@@ -84,6 +79,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             startActivity(new Intent(Login.this, MainActivity.class));
             finish();
         }
+
 
     }
 

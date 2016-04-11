@@ -9,6 +9,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".Login">
 
+
     <com.google.android.gms.common.SignInButton
         android:id="@+id/login_goolge"
         android:layout_width="match_parent"
