@@ -7,7 +7,12 @@
         android:orderInCategory="10"
         android:title="@string/edit"
         app:showAsAction="withText|ifRoom"
-
+        />
+    <item
+        android:id="@+id/btnDelete"
+        android:orderInCategory="20"
+        android:title="刪除"
+        app:showAsAction="withText|ifRoom"
         />
 
 </menu>

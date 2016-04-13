@@ -7,8 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.professorlee.foodnotes.config.ipconfig;
@@ -19,9 +17,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.OptionalPendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -62,12 +57,12 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
-
+        Log.i(TAG, "onCreate: 1");
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-
+        Log.i(TAG, "onCreate: 2");
         loginGoolge.setScopes(gso.getScopeArray());
         loginGoolge.setOnClickListener(view -> signIn());
 
@@ -85,6 +80,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
 
     private void signIn() {
+        Log.i(TAG, "signIn: ");
         Intent intent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(intent, RC_SIGN_IN);
 

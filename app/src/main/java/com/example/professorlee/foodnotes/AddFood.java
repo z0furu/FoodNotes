@@ -42,7 +42,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.professorlee.foodnotes.config.ipconfig;
-import com.google.android.gms.games.internal.constants.RequestStatus;
+import com.orhanobut.logger.Logger;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import org.json.JSONException;
@@ -131,6 +131,7 @@ public class AddFood extends AppCompatActivity implements DatePickerDialog.OnDat
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_food);
         ButterKnife.bind(this);
+        Logger.init();
 
         SharedPreferences setting = getSharedPreferences("login", 0);
         account = setting.getString("account", "");
@@ -239,7 +240,7 @@ public class AddFood extends AppCompatActivity implements DatePickerDialog.OnDat
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
                         String result = response.body().string();
-                        Log.i(TAG, "onResponse: " + result);
+                        Logger.json(result);
                         AddFood.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -256,6 +257,7 @@ public class AddFood extends AppCompatActivity implements DatePickerDialog.OnDat
                                         Toast.makeText(getApplicationContext(), "新增成功", Toast.LENGTH_SHORT).show();
                                     }
                                 });
+                                pDialog.dismiss();
                                 startActivity(new Intent(AddFood.this, MainActivity.class));
                                 finish();
                             } else if (success == 2) {
@@ -586,8 +588,8 @@ public class AddFood extends AppCompatActivity implements DatePickerDialog.OnDat
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onPause() {
+        super.onPause();
         if (pDialog != null) {
             pDialog.dismiss();
             pDialog = null;

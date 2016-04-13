@@ -1,10 +1,9 @@
 package com.example.professorlee.foodnotes;
 
-import android.app.ProgressDialog;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -57,6 +56,8 @@ public class FoodList extends AppCompatActivity {
 
     private String account;
 
+    public static Activity activity;
+
 
 
     @Override
@@ -80,6 +81,8 @@ public class FoodList extends AppCompatActivity {
                 Log.i(TAG, "onRefresh: ");
             }
         });
+
+        activity = this;
 
 
     }
@@ -138,12 +141,15 @@ public class FoodList extends AppCompatActivity {
 
                             TableItem tableItem = new TableItem(name[i], location[i], image[i]);
                             listTableItem.add(tableItem);
+                            if (jsonArray.length() == i) {
+                                swipeRefreshLayout.setRefreshing(false);
+                            }
                         }
                         FoodList.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 adapterRecycleView();
-                                swipeRefreshLayout.setRefreshing(false);
+
 
                             }
                         });
@@ -183,10 +189,18 @@ public class FoodList extends AppCompatActivity {
                 bundle.putString("shopname", name[id]);
                 intent.setClass(FoodList.this, FoodDetail.class);
                 intent.putExtras(bundle);
+                //intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 startActivity(intent);
+
             }
         });
 
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        refresh();
     }
 
     private void refresh() {

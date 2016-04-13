@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,10 +38,12 @@ public class TableRecycleAdapter extends RecyclerView.Adapter<TableRecycleAdapte
         private TextView shopname;
         private TextView location;
         private ImageView imageView;
-
+        private CardView cardView;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            cardView = (CardView) itemView.findViewById(R.id.cardView);
+            cardView.setCardBackgroundColor(Color.argb(255,225,245,254));
             shopname = (TextView) itemView.findViewById(R.id.name);
             location = (TextView) itemView.findViewById(R.id.location);
             imageView = (ImageView) itemView.findViewById(R.id.image);
@@ -54,7 +55,7 @@ public class TableRecycleAdapter extends RecyclerView.Adapter<TableRecycleAdapte
         holder.shopname.setText(tableItems.get(position).getShopname());
         holder.location.setText(tableItems.get(position).getLocation());
 
-        Glide.with(mContext).load("http://163.17.9.116/Lu/food_note/upload/" + tableItems.get(position).getFoodimage())
+        Glide.with(mContext).load("http://skychi.no-ip.org/Lu/food_note/upload/" + tableItems.get(position).getFoodimage())
                 .centerCrop()
                 .into(holder.imageView);
 

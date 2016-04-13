@@ -14,9 +14,9 @@
         android:layout_centerInParent="true"
         android:src="@drawable/ic_add"
         android:layout_marginTop="20dp"
-        app:civ_border_width="2dp"
-        app:civ_border_color="#90c1e9"
-        app:civ_fill_color="#fa6419"/>
+        app:civ_border_width="5dp"
+        app:civ_border_color="#013baf"
+        app:civ_fill_color="#0a55ec"/>
 
     <TextView
         android:id="@+id/text"

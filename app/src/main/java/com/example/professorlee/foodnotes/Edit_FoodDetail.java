@@ -4,7 +4,6 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -19,7 +18,6 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.annotation.StringDef;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
@@ -45,7 +43,6 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -54,6 +51,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -90,6 +88,8 @@ public class Edit_FoodDetail extends AppCompatActivity implements DatePickerDial
     private static final int MEDIA_TYPE_IMAGE = 3;
 
     private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
+
+    Request request;
 
     private static String imgname = null;
     private DisplayMetrics mPhone;
@@ -155,54 +155,80 @@ public class Edit_FoodDetail extends AppCompatActivity implements DatePickerDial
 
             if (isCamera) {
                 file = fileUri.getPath();
+            }else if (isPhote) {
+                file = imgname;
+            }
+            if(file == strImage) {
+                requestBody = new FormBody.Builder()
+                        .add("account", account)
+                        .add("edtshopname", strShopName)
+                        .add("shopname", edtShopname.getText().toString())
+                        .add("time", edtDate.getText().toString())
+                        .add("location", edtLocation.getText().toString())
+                        .add("foodtype", edtType.getText().toString())
+                        .build();
+
+                request = new Request.Builder()
+                        .url(ipconfig.updateFoodDetail)
+                        .post(requestBody)
+                        .build();
+            }else {
+                requestBody = new MultipartBody.Builder()
+                        .setType(MultipartBody.FORM)
+                        .addFormDataPart("account", account)
+                        .addFormDataPart("edtshopname", strShopName)
+                        .addFormDataPart("shopname", edtShopname.getText().toString())
+                        .addFormDataPart("time", edtDate.getText().toString())
+                        .addFormDataPart("location", edtLocation.getText().toString())
+                        .addFormDataPart("foodtype", edtType.getText().toString())
+                        .addFormDataPart("addimage", file, RequestBody.create(MEDIA_TYPE_PNG, new File(file)))
+                        .build();
+
+                request = new Request.Builder()
+                        .url(ipconfig.updateFoodDetail)
+                        .post(requestBody)
+                        .build();
             }
             Logger.d(edtShopname.getText().toString()+"," +edtLocation.getText().toString() +"," +edtDate.getText().toString()
                     +"," +edtType.getText().toString()+"," +file);
-            requestBody = new MultipartBody.Builder()
-                    .setType(MultipartBody.FORM)
-                    .addFormDataPart("account", account)
-                    .addFormDataPart("edtshopname", strShopName)
-                    .addFormDataPart("shopname", edtShopname.getText().toString())
-                    .addFormDataPart("time", edtDate.getText().toString())
-                    .addFormDataPart("location", edtLocation.getText().toString())
-                    .addFormDataPart("foodtype", edtType.getText().toString())
-                    .addFormDataPart("addimage", file, RequestBody.create(MEDIA_TYPE_PNG, new File(file)))
-                    .build();
 
-            Request request = new Request.Builder()
-                    .url(ipconfig.updateFoodDetail)
-                    .post(requestBody)
-                    .build();
+
 
             Call call = okhttpClient.newCall(request);
             call.enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
-                    Logger.i(e.getMessage());
-                    Edit_FoodDetail.this.runOnUiThread(()-> hideDialog());
+                    Log.i(TAG, "onFailure: " + e.getMessage());
+                    Edit_FoodDetail.this.runOnUiThread(() -> hideDialog());
+                    Edit_FoodDetail.this.runOnUiThread(() ->
+                            Toast.makeText(getApplicationContext(), "請檢查連線是否正確", Toast.LENGTH_SHORT).show());
                 }
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
-                    Logger.json(response.body().string());
-                    String strResponse = response.body().string();
+                    String result = response.body().string();
                     int success;
-
                     try {
-                        JSONObject json = new JSONObject(strResponse);
+                        JSONObject json = new JSONObject(result);
                         success = json.getInt("success");
+                        Edit_FoodDetail.this.runOnUiThread(() -> hideDialog());
                         if (success == 1) {
-                            startActivity(new Intent(Edit_FoodDetail.this, FoodDetail.class));
-                            Edit_FoodDetail.this.runOnUiThread(()-> hideDialog());
-                            Toast.makeText(getApplicationContext(), "修改成功", Toast.LENGTH_SHORT).show();
+                            Edit_FoodDetail.this.runOnUiThread(() ->
+                            Toast.makeText(getApplicationContext(), "修改成功", Toast.LENGTH_SHORT).show());
+                            Bundle bundle = new Bundle();
+                            bundle.putString("shopname", edtShopname.getText().toString());
+                            Intent intent = new Intent();
+                            intent.setClass(Edit_FoodDetail.this, FoodDetail.class);
+                            intent.putExtras(bundle);
+                            startActivity(intent);
                             finish();
                         }else {
-                            Toast.makeText(getApplicationContext(), "商店名稱已重複", Toast.LENGTH_SHORT).show();
+                            Edit_FoodDetail.this.runOnUiThread(() ->
+                                    Toast.makeText(getApplicationContext(), "修改失敗", Toast.LENGTH_SHORT).show());
                         }
-                    } catch (JSONException e) {
+                    }catch (JSONException e) {
                         e.printStackTrace();
                     }
-
                 }
             });
         }
@@ -228,7 +254,7 @@ public class Edit_FoodDetail extends AppCompatActivity implements DatePickerDial
 
 
         strImage = bundle.getString("image");
-        Glide.with(Edit_FoodDetail.this).load("http://163.17.9.116/Lu/food_note/upload/" + strImage).fitCenter().into(foodimage);
+        Glide.with(Edit_FoodDetail.this).load("http://skychi.no-ip.org/Lu/food_note/upload/" + strImage).fitCenter().into(foodimage);
 
         String strLocation = bundle.getString("Location");
         edtLocation.setText(strLocation);
@@ -284,7 +310,7 @@ public class Edit_FoodDetail extends AppCompatActivity implements DatePickerDial
     private void ToCamera() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
-                Snackbar.make(linearLayout, "需要給予權限", Snackbar.LENGTH_INDEFINITE)
+                Snackbar.make(linearLayout, "需要給予權限", Snackbar.LENGTH_SHORT)
                         .setAction("確認", view -> ActivityCompat.requestPermissions(Edit_FoodDetail.this, PERMISSIONS_CAMERA, Request_Camera)).show();
             } else {
                 ActivityCompat.requestPermissions(Edit_FoodDetail.this, PERMISSIONS_CAMERA, Request_Camera);
@@ -349,7 +375,7 @@ public class Edit_FoodDetail extends AppCompatActivity implements DatePickerDial
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        Log.i(TAG, "onRequestPermissionsResult: " + requestCode + "," + grantResults[0] +"," + grantResults[1]);
+        Log.i(TAG, "onRequestPermissionsResult: " + requestCode + ",相機：" + grantResults[0]);
         if (requestCode == 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             IntentCamera();
         }else if (requestCode == 1 && grantResults[1] == PackageManager.PERMISSION_GRANTED) {

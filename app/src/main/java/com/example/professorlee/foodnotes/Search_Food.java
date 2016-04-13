@@ -72,7 +72,7 @@ public class Search_Food extends AppCompatActivity {
     private List<TableItem_search_food> ListtableItem = new ArrayList<>();
 
     int arrayLength;
-    int radius =  5000;
+    int radius =  3000;
     private static final int Request_Location = 2;
     private static String[] PERMISSIONS_LOCATION = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
 
@@ -84,13 +84,17 @@ public class Search_Food extends AppCompatActivity {
         ButterKnife.bind(this);
         Logger.init();
         if (Build.VERSION.SDK_INT < 23) {
-            refresh();
+            refreshData();
+            Log.i(TAG, "onCreate: 23以下");
+
         }else {
             checkLocationPermission();
+            Log.i(TAG, "onCreate: res ");
         }
 
 
         chosedistance();
+        getLocation();
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_purple, android.R.color.holo_blue_bright, android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
 
@@ -99,9 +103,9 @@ public class Search_Food extends AppCompatActivity {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                Log.i(TAG, "onRefresh: onclick");
+                refreshData();
 
-                refresh();
-                Log.i(TAG, "onRefresh: ");
             }
         });
 
@@ -124,7 +128,8 @@ public class Search_Food extends AppCompatActivity {
                 ActivityCompat.requestPermissions(Search_Food.this, PERMISSIONS_LOCATION, Request_Location);
             }
         }else {
-            refresh();
+            Search_Food.this.runOnUiThread(()-> refreshData());
+            Log.i(TAG, "checkLocationPermission: refresh()");
         }
     }
 
@@ -133,7 +138,8 @@ public class Search_Food extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         Log.i(TAG, "onRequestPermissionsResult: " + requestCode + "," +grantResults[0]);
         if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            refresh();
+            Log.i(TAG, "onRequestPermissionsResult: refresh()");
+            refreshData();
         }else {
             Toast.makeText(getApplicationContext(), "請給予位置權限", Toast.LENGTH_SHORT).show();
             finish();
@@ -152,25 +158,28 @@ public class Search_Food extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Log.i(TAG, "onItemSelected: " + position);
                 switch (position) {
-                    case 0 :
-                        radius = 5000;
-                        refresh();
+                    case 0:
+                        Log.i(TAG, "onItemSelected: ");
                         break;
                     case 1 :
-                        radius = 7000;
-                        refresh();
+                        radius = 5000;
+                        refreshData();
                         break;
                     case 2 :
-                        radius = 11000;
-                        refresh();
+                        radius = 7000;
+                        refreshData();
                         break;
                     case 3 :
-                        radius = 13000;
-                        refresh();
+                        radius = 11000;
+                        refreshData();
                         break;
                     case 4 :
+                        radius = 13000;
+                        refreshData();
+                        break;
+                    case 5 :
                         radius = 15000;
-                        refresh();
+                        refreshData();
                         break;
 
                 }
@@ -185,18 +194,16 @@ public class Search_Food extends AppCompatActivity {
 
     }
 
-    private void refresh() {
-        swipeRefreshLayout.setRefreshing(true);
-        getLocation();
-
+    private void refreshData() {
+        Log.i(TAG, "refresh: refresh()Data");
         ListtableItem.clear();
         search_food();
 
     }
 
     private void search_food() {
-
-
+        Log.i(TAG, "search_food: 搜尋");
+        swipeRefreshLayout.setRefreshing(true);
         final Request request = new Request.Builder()
                 .url("https://maps.googleapis.com/maps/api/place/nearbysearch/json?language=zh-TW&location="
                         + lat + "," + lng + "&radius=" + radius/2 + "&types=restaurant|food&key=AIzaSyAv6Z_x-ssH1UhWoWbaZzAGCQN0i1T5t-w")
@@ -216,7 +223,7 @@ public class Search_Food extends AppCompatActivity {
 
                 try {
                     JSONObject jsonObject = new JSONObject(strResponse);
-                    Logger.json(strResponse);
+                    //Logger.json(strResponse);
                     if ("OK".equals(jsonObject.getString("status"))) {
                         JSONArray jsonArray = jsonObject.getJSONArray("results");
                         arrayLength = jsonArray.length();
@@ -272,10 +279,6 @@ public class Search_Food extends AppCompatActivity {
                     latitude = Double.parseDouble(c.getString("lat"));
                     longitude = Double.parseDouble(c.getString("lng"));
 
-//                    Geocoder geoCoder = new Geocoder(getApplicationContext(), Locale.getDefault());
-//                    List<Address> addressLocation = geoCoder.getFromLocationName(location[i], 1);
-//                    latitude = addressLocation.get(0).getLatitude();
-//                    longitude = addressLocation.get(0).getLongitude();
                     Logger.d(latitude + "," + longitude);
                     Logger.d(location[i]);
 
@@ -289,16 +292,6 @@ public class Search_Food extends AppCompatActivity {
         });
     }
 
-    private void adapterRecycleView() {
-
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(Search_Food.this);
-        recyclerView.setLayoutManager(layoutManager);
-
-        TableItem_searchRecycleAdapter adapter = new TableItem_searchRecycleAdapter(ListtableItem, Search_Food.this);
-        recyclerView.setAdapter(adapter);
-
-    }
 
     private void getDistance(double latitude, double longitude, final int i) {
 
@@ -339,17 +332,27 @@ public class Search_Food extends AppCompatActivity {
                 Search_Food.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-
-                        Log.i(TAG, "run: 顯示");
+                        Logger.d("array" + arrayLength + "," + i);
                         adapterRecycleView();
-                        swipeRefreshLayout.setRefreshing(false);
+
                     }
-
-
                 });
+
             }
         });
     }
+
+    private void adapterRecycleView() {
+
+        swipeRefreshLayout.setRefreshing(false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(Search_Food.this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        TableItem_searchRecycleAdapter adapter = new TableItem_searchRecycleAdapter(ListtableItem, Search_Food.this);
+        recyclerView.setAdapter(adapter);
+
+    }
+
 
 
     private void getLocation() {

@@ -9,14 +9,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:weightSum="6">
+        android:weightSum="8">
 
 
         <ImageView
             android:id="@+id/foodimage"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2"
+            android:layout_weight="3"
             android:src="@drawable/ic_camera_alt_black_36dp"
             android:layout_marginRight="16dp"
             android:layout_marginLeft="16dp"
@@ -30,10 +30,11 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2"
+            android:layout_weight="4"
             android:orientation="vertical">
             <TextView
                 android:id="@+id/shopname"
+                android:gravity="center_vertical"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
@@ -54,6 +55,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:padding="5dp"
+                android:gravity="center_vertical"
                 android:layout_marginLeft="16dp"
                 android:textSize="@dimen/food_detail_text"
                 tools:text="123"
@@ -70,6 +72,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:padding="5dp"
+                android:gravity="center_vertical"
                 android:layout_marginLeft="16dp"
                 android:textSize="@dimen/food_detail_text"
                 tools:text="123"
@@ -87,6 +90,7 @@
                 android:layout_weight="1"
                 android:padding="5dp"
                 android:onClick="btnToMap"
+                android:gravity="center_vertical"
                 android:drawableRight="@drawable/ic_keyboard_arrow_right_24dp"
                 android:textSize="@dimen/food_detail_text"
                 tools:text="123"
