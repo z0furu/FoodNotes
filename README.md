@@ -7,13 +7,13 @@
 
 ### App截圖畫面
 
- ㄎ| 新增食記 | 食記清單 |
+ 主畫面| 新增食記 | 食記清單 |
 ------------ | ------------- | ------------
-<img src="http://imgur.com/1QViFT4.jpg" height="500px"/> | <img src="http://imgur.com/tAMlL4A.jpg" height="500px"/> |<img src="http://imgur.com/LKXiqKj.jpg" height="500px"/> |
+<img src="http://imgur.com/c0ZpjEp.jpg" height="500px"/> | <img src="http://imgur.com/jIiXsFz.jpg" height="500px"/> |<img src="http://imgur.com/bMSFz40.jpg" height="500px"/> |
 
-顯示美記內容 | 修改美食紀錄 | 搜尋附近美食
+顯示美記內容| 修改美食紀錄 | 搜尋附近美食
 ------------ | ------------- | ------------
-<img src="http://imgur.com/YeX2fhL.jpg" height="500px"/> | <img src="http://imgur.com/foocd3y.jpg" height="500px"/> |<img src="http://imgur.com/2b55rZL.jpg" height="500px"/> |
+<img src="http://imgur.com/L0aQXIh.jpg" height="500px"/> | <img src="http://imgur.com/LJMKkYj.jpg" height="500px"/> |<img src="http://imgur.com/onJNQlI.jpg" height="500px"/> |
 
 
 
