@@ -1,4 +1,4 @@
-package com.example.professorlee.foodnotes;
+package com.lu.luandroid.foodnotes;
 
 import android.Manifest;
 import android.annotation.TargetApi;
@@ -41,7 +41,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.example.professorlee.foodnotes.config.ipconfig;
+import com.lu.luandroid.foodnotes.config.ipconfig;
 import com.orhanobut.logger.Logger;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
@@ -490,9 +490,11 @@ public class AddFood extends AppCompatActivity implements DatePickerDialog.OnDat
             btnCamera.setVisibility(View.GONE);
             imageview.setVisibility(View.VISIBLE);
             btnclc.setVisibility(View.VISIBLE);
+
             ContentResolver cr = getContentResolver();
             try {
                 Bitmap image = BitmapFactory.decodeStream(cr.openInputStream(fileUri));
+
                 if (image.getWidth() > image.getHeight()) {
                     ScalePic(image, mPhone.heightPixels);
                 } else {

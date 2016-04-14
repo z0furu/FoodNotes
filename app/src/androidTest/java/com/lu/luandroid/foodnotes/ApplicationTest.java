@@ -1,4 +1,4 @@
-package com.example.professorlee.foodnotes;
+package com.lu.luandroid.foodnotes;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

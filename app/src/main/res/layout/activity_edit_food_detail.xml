@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.professorlee.foodnotes.Edit_FoodDetail">
+    tools:context="com.lu.luandroid.foodnotes.Edit_FoodDetail">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -1,9 +1,7 @@
-package com.example.professorlee.foodnotes;
+package com.lu.luandroid.foodnotes;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
@@ -32,9 +30,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
 
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback, LocationListener {
 

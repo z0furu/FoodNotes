@@ -1,4 +1,4 @@
-package com.example.professorlee.foodnotes;
+package com.lu.luandroid.foodnotes;
 
 import org.junit.Test;
 

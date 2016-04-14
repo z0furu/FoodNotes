@@ -1,4 +1,4 @@
-package com.example.professorlee.foodnotes;
+package com.lu.luandroid.foodnotes;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,11 +39,10 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     RelativeLayout viewpagerRelativeLayout;
 
     private int[] images = {
-            R.drawable.ic_add, R.drawable.ic_restaurant_menu, R.drawable.ic_place_black_24dp,
-            R.drawable.monkey, R.drawable.mushroom, R.drawable.panda};
+            R.drawable.ic_add, R.drawable.ic_restaurant_menu, R.drawable.ic_place_black_24dp};
 
     private String[] txtImages = {
-            "新增美食", "查看記錄", "搜尋附近", "test", "Test", "test"};
+            "新增美食", "查看記錄", "搜尋附近"};
 
     private int dotCount;
     private ImageView[] dots;

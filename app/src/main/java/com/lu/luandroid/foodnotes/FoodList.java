@@ -1,4 +1,4 @@
-package com.example.professorlee.foodnotes;
+package com.lu.luandroid.foodnotes;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,7 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.professorlee.foodnotes.config.ipconfig;
+import com.lu.luandroid.foodnotes.config.ipconfig;
 
 import org.json.JSONArray;
 import org.json.JSONException;

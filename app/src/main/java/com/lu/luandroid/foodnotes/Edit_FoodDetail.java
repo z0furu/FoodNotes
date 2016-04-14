@@ -1,4 +1,4 @@
-package com.example.professorlee.foodnotes;
+package com.lu.luandroid.foodnotes;
 
 import android.Manifest;
 import android.annotation.TargetApi;
@@ -33,7 +33,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.professorlee.foodnotes.config.ipconfig;
+import com.lu.luandroid.foodnotes.config.ipconfig;
 import com.orhanobut.logger.Logger;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 

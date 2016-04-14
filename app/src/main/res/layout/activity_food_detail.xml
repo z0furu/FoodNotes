@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.professorlee.foodnotes.FoodDetail">
+    tools:context="com.lu.luandroid.foodnotes.FoodDetail">
 
     <LinearLayout
         android:layout_width="match_parent"

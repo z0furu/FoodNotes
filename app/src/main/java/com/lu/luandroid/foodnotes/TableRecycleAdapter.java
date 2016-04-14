@@ -1,4 +1,4 @@
-package com.example.professorlee.foodnotes;
+package com.lu.luandroid.foodnotes;
 
 
 import android.content.Context;
@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.List;
 
@@ -56,7 +57,8 @@ public class TableRecycleAdapter extends RecyclerView.Adapter<TableRecycleAdapte
         holder.location.setText(tableItems.get(position).getLocation());
 
         Glide.with(mContext).load("http://skychi.no-ip.org/Lu/food_note/upload/" + tableItems.get(position).getFoodimage())
-                .centerCrop()
+                .fitCenter()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.imageView);
 
     }

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/relativeLayout"
-    tools:context="com.example.professorlee.foodnotes.AddFood">
+    tools:context="com.lu.luandroid.foodnotes.AddFood">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"

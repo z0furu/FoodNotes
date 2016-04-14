@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:id="@+id/mMap"
     android:name="com.google.android.gms.maps.SupportMapFragment"
-    tools:context="com.example.professorlee.foodnotes.MapActivity">
+    tools:context="com.lu.luandroid.foodnotes.MapActivity">
 
 
 

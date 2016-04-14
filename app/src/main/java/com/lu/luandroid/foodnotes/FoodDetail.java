@@ -1,4 +1,4 @@
-package com.example.professorlee.foodnotes;
+package com.lu.luandroid.foodnotes;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -16,7 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.professorlee.foodnotes.config.ipconfig;
+import com.lu.luandroid.foodnotes.config.ipconfig;
 import com.orhanobut.logger.Logger;
 
 import org.json.JSONException;

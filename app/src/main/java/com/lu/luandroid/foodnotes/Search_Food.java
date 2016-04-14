@@ -1,4 +1,4 @@
-package com.example.professorlee.foodnotes;
+package com.lu.luandroid.foodnotes;
 
 import android.Manifest;
 import android.content.Context;
@@ -160,6 +160,7 @@ public class Search_Food extends AppCompatActivity {
                 switch (position) {
                     case 0:
                         Log.i(TAG, "onItemSelected: ");
+                        refreshData();
                         break;
                     case 1 :
                         radius = 5000;
