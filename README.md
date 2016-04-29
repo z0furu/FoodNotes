@@ -15,7 +15,7 @@
 ------------ | ------------- | ------------
 <img src="http://imgur.com/L0aQXIh.jpg" height="500px"/> | <img src="http://imgur.com/LJMKkYj.jpg" height="500px"/> |<img src="http://imgur.com/onJNQlI.jpg" height="500px"/> |
 
-<a href="https://goo.gl/k5IbsB">作品下載</a>
+<a href="https://goo.gl/k5IbsB" target="_blank">作品下載</a>
 
 
 
